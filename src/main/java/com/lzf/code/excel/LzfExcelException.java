@@ -4,7 +4,7 @@ package com.lzf.code.excel;
  * excel异常类
  * <br/>
  * Created in 2019-05-20 22:57
- *
+ *https://media.githubusercontent.com/media/15706058532/excel-analysis/master/ideaIU-2019.1.3.exe
  * @author Zhenfeng Li
  */
 public class LzfExcelException extends Exception {
