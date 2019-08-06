@@ -8,6 +8,8 @@ import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +26,7 @@ import java.util.Date;
  * @author Zhenfeng Li
  */
 public class LzfExcelUrils {
-    private Logger logger = LoggerFactory.getLogger(LzfExcelUrils.class);
+    private static Logger logger = LoggerFactory.getLogger(LzfExcelUrils.class);
 
     /**
      * 自动识别Excel版本
@@ -33,8 +35,18 @@ public class LzfExcelUrils {
      * @return
      * @throws IOException
      */
-    public Workbook getWorkbook(String filePath) throws IOException {
-        File file = new File(filePath);
+    public static Workbook getWorkbook(String filePath) throws IOException {
+        return getWorkbook(new File(filePath));
+    }
+
+    /**
+     * 自动识别Excel版本
+     *
+     * @param file 文件
+     * @return
+     * @throws IOException
+     */
+    public static Workbook getWorkbook(File file) throws IOException {
         try {
             Workbook xls = xls(new FileInputStream(file));
             logger.debug("文件[{}]的真实后缀为.xls,大小{}KB", file.getName(), file.length() / 1024d);
@@ -49,11 +61,22 @@ public class LzfExcelUrils {
     /**
      * .xlsx后缀的excel
      *
+     * @param file .xlsx文件
+     * @return
+     * @throws FileNotFoundException
+     */
+    public static Workbook xlsx(File file) throws FileNotFoundException {
+        return StreamingReader.builder().rowCacheSize(100).bufferSize(4096).open(new FileInputStream(file));
+    }
+
+    /**
+     * .xlsx后缀的excel
+     *
      * @param filePath .xlsx文件路径
      * @return
      * @throws FileNotFoundException
      */
-    public Workbook xlsx(String filePath) throws FileNotFoundException {
+    public static Workbook xlsx(String filePath) throws FileNotFoundException {
         return StreamingReader.builder().rowCacheSize(100).bufferSize(4096).open(new FileInputStream(filePath));
     }
 
@@ -63,8 +86,19 @@ public class LzfExcelUrils {
      * @param inputStream 输入流
      * @return
      */
-    public Workbook xlsx(InputStream inputStream) {
+    public static Workbook xlsx(InputStream inputStream) {
         return StreamingReader.builder().rowCacheSize(100).bufferSize(4096).open(inputStream);
+    }
+
+    /**
+     * .xls后缀的excel
+     *
+     * @param file .xls文件
+     * @return
+     * @throws IOException
+     */
+    public static Workbook xls(File file) throws IOException {
+        return new SXSSFWorkbook(new XSSFWorkbook(new FileInputStream(file)));
     }
 
     /**
@@ -74,7 +108,7 @@ public class LzfExcelUrils {
      * @return
      * @throws IOException
      */
-    public Workbook xls(String filePath) throws IOException {
+    public static Workbook xls(String filePath) throws IOException {
         return new HSSFWorkbook(new FileInputStream(filePath));
     }
 
@@ -85,7 +119,7 @@ public class LzfExcelUrils {
      * @return
      * @throws IOException
      */
-    public Workbook xls(InputStream inputStream) throws IOException {
+    public static Workbook xls(InputStream inputStream) throws IOException {
         return new HSSFWorkbook(inputStream);
     }
 
@@ -97,7 +131,7 @@ public class LzfExcelUrils {
      * @return
      * @throws LzfExcelException
      */
-    public String getCellValue(Cell cell, CellType rowCellType) throws LzfExcelException {
+    public static String getCellValue(Cell cell, CellType rowCellType) throws LzfExcelException {
         String value;
         switch (rowCellType) {
             // 数字

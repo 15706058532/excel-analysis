@@ -1,5 +1,6 @@
 package com.lzf.code.excel;
 
+import com.lzf.code.xls.Excel2003Reader;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -26,28 +27,27 @@ public class LzfExcelTest {
 
     @Test
     public void testOne() throws IOException, LzfExcelException {
-        LzfExcelUrils lzfExcelUrils = new LzfExcelUrils();
         //小文件
         String filePath = "E:\\ideaProjects\\excel-analysis\\src\\main\\resources\\file\\测试-老版本-副本.xls";
         long start = System.currentTimeMillis();
-        Workbook wb = lzfExcelUrils.getWorkbook(filePath);
-        forEach(lzfExcelUrils, wb);
+        Workbook wb = LzfExcelUrils.getWorkbook(filePath);
+        forEach(wb);
         long end = System.currentTimeMillis();
         logger.debug(">>>>>>>>>>>>>耗时：{}秒", (end - start) / 1000);
         logger.debug("-------------------------------");
         //大文件100+M
         filePath = "E:\\ideaProjects\\excel-analysis\\src\\main\\resources\\file\\测试-老版本.xls";
         start = System.currentTimeMillis();
-        wb = lzfExcelUrils.getWorkbook(filePath);
-        forEach(lzfExcelUrils, wb);
+        wb = LzfExcelUrils.getWorkbook(filePath);
+        forEach(wb);
         end = System.currentTimeMillis();
         logger.debug(">>>>>>>>>>>>>耗时：{}秒", (end - start) / 1000);
         logger.debug("-------------------------------");
         //大文件100+M
         filePath = "E:\\ideaProjects\\excel-analysis\\src\\main\\resources\\file\\测试-新版本.xlsx";
         start = System.currentTimeMillis();
-        wb = lzfExcelUrils.getWorkbook(filePath);
-        forEach(lzfExcelUrils, wb);
+        wb = LzfExcelUrils.getWorkbook(filePath);
+        forEach(wb);
         end = System.currentTimeMillis();
         logger.debug(">>>>>>>>>>>>>耗时：{}秒", (end - start) / 1000);
         logger.debug("-------------------------------");
@@ -55,51 +55,51 @@ public class LzfExcelTest {
 
     @Test
     public void testXls() throws IOException, LzfExcelException {
-        LzfExcelUrils lzfExcelUrils = new LzfExcelUrils();
         //小文件
-        String filePath = "E:\\ideaProjects\\excel-analysis\\src\\main\\resources\\file\\测试-老版本-副本.xls";
-        long start = System.currentTimeMillis();
-        Workbook wb = lzfExcelUrils.xls(filePath);
-        forEach(lzfExcelUrils, wb);
-        long end = System.currentTimeMillis();
-        logger.debug(">>>>>>>>>>>>>耗时:{}秒", (end - start) / 1000);
-        logger.debug("-------------------------------");
-        //大文件100+M
-        filePath = "E:\\ideaProjects\\excel-analysis\\src\\main\\resources\\file\\测试-老版本.xls";
-        start = System.currentTimeMillis();
-        wb = lzfExcelUrils.xls(new FileInputStream(filePath));
-        forEach(lzfExcelUrils, wb);
-        end = System.currentTimeMillis();
-        logger.debug(">>>>>>>>>>>>>耗时:{}秒", (end - start) / 1000);
-        logger.debug("-------------------------------");
+        String filePath = "C:\\Users\\15706\\Desktop\\测试-老版本 - 副本.xls";
+        Excel2003Reader excel2003Reader = new Excel2003Reader();
+        excel2003Reader.process(filePath);
+//        long start = System.currentTimeMillis();
+//        Workbook wb = LzfExcelUrils.xls(filePath);
+//        forEach(wb);
+//        long end = System.currentTimeMillis();
+//        logger.debug(">>>>>>>>>>>>>耗时:{}秒", (end - start) / 1000);
+//        logger.debug("-------------------------------");
+//        //大文件100+M
+//        filePath = "E:\\ideaProjects\\excel-analysis\\src\\main\\resources\\file\\测试-老版本-副本.xls";
+//        start = System.currentTimeMillis();
+//        wb = LzfExcelUrils.xls(new FileInputStream(filePath));
+//        forEach(wb);
+//        end = System.currentTimeMillis();
+//        logger.debug(">>>>>>>>>>>>>耗时:{}秒", (end - start) / 1000);
+//        logger.debug("-------------------------------");
     }
 
     @Test
     public void testXlsx() throws IOException, LzfExcelException {
-        LzfExcelUrils lzfExcelUrils = new LzfExcelUrils();
         //大文件100+M
-        String filePath = "E:\\ideaProjects\\excel-analysis\\src\\main\\resources\\file\\测试-新版本.xlsx";
+        String filePath = "C:\\Users\\15706\\Desktop\\数据-DB_KA_Offtake_2017-2019 (恢复的).xlsx";
         long start = System.currentTimeMillis();
-        Workbook wb = lzfExcelUrils.xlsx(filePath);
-        forEach(lzfExcelUrils, wb);
+        Workbook wb = LzfExcelUrils.xlsx(filePath);
+        forEach(wb);
         long end = System.currentTimeMillis();
         logger.debug(">>>>>>>>>>>>>耗时:{}秒", (end - start) / 1000);
         logger.debug("-------------------------------");
         //大文件100+M
         filePath = "E:\\ideaProjects\\excel-analysis\\src\\main\\resources\\file\\测试-新版本.xlsx";
         start = System.currentTimeMillis();
-        wb = lzfExcelUrils.xlsx(new FileInputStream(filePath));
-        forEach(lzfExcelUrils, wb);
+        wb = LzfExcelUrils.xlsx(new FileInputStream(filePath));
+        forEach(wb);
         end = System.currentTimeMillis();
         logger.debug(">>>>>>>>>>>>>耗时: {}秒", (end - start) / 1000);
         logger.debug("-------------------------------");
     }
 
-    private void forEach(LzfExcelUrils lzfExcelUrils, Workbook wb) throws LzfExcelException {
+    private void forEach(Workbook wb) throws LzfExcelException {
         for (Sheet sheet : wb) {
             for (Row row : sheet) {
                 for (Cell cell : row) {
-                    logger.debug("{}行{}列 值：{}", row.getRowNum(), cell.getColumnIndex(), lzfExcelUrils.getCellValue(cell, cell.getCellType()));
+                    logger.debug("{}行{}列 值：{}", row.getRowNum(), cell.getColumnIndex(), LzfExcelUrils.getCellValue(cell, cell.getCellType()));
                 }
                 logger.debug("....................行结束..........................");
             }
